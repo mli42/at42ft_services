@@ -9,6 +9,13 @@ if ! kubectl version 2>/dev/null 1>&2 ; then
 	eval $(minikube docker-env -u)
 fi
 
+############################## Launched with arg ##############################
+
+if [ "$1" == "fclean" ]; then
+	kubectl delete all --all-namespaces --all
+	exit
+fi
+
 ############################## Install Metal LB ###############################
 #  Preparation
 
@@ -44,12 +51,12 @@ services=(		\
 echo "Building images:"
 for service in "${services[@]}"
 do
-	echo "	Building $service image..."
-#	docker build -t $service-img ./srcs/$service >/dev/null
-#	kubectl delete -f srcs/$service-deployment.yaml >/dev/null 2>&1
-	echo "	Creating $service container..."
-#	kubectl apply -f ./srcs/$service-deployment.yaml >/dev/null
-#	while [[ $(kubectl get pods -l app=$service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
-#		sleep 1;
-#	done
+	printf "\tBuilding $service image...\n"
+	docker build -t $service-img ./srcs/$service/
+	kubectl delete -f srcs/$service-deployment.yaml #2>/dev/null 1>&2
+	printf "\tCreating $service container...\n"
+	kubectl apply -f ./srcs/$service-deployment.yaml # 1>/dev/null
+	while [[ $(kubectl get pods -l app=$service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
+		sleep 1;
+	done
 done
