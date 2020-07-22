@@ -5,4 +5,4 @@ WORKDIR /tmp/
 # Prerequisites
 RUN apk update && apk add nginx
 
-ENTRYPOINT tail -f /dev/null
+ENTRYPOINT nginx -g daemon off

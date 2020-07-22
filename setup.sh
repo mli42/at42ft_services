@@ -64,7 +64,7 @@ do
 	kubectl delete -f srcs/$service-deployment.yaml #2>/dev/null 1>&2
 	printf "\tCreating $service container...\n"
 	kubectl apply -f ./srcs/$service-deployment.yaml # 1>/dev/null
-	while ! echo "$(kubectl get pods -l app=$service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}')" | grep "True" 1>/dev/null; do
+	while ! kubectl get pods | grep $service | grep Running 1>/dev/null; do
 		sleep 1;
 	done
 done
