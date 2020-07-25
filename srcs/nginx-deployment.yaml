@@ -6,7 +6,7 @@
 #    By: mli <mli@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/19 20:13:53 by mli               #+#    #+#              #
-#    Updated: 2020/07/22 17:41:31 by mli              ###   ########.fr        #
+#    Updated: 2020/07/25 12:31:58 by mli              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ metadata:
   labels:
     app: ft_services
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: ft_services
   ports:
