@@ -1,17 +1,19 @@
-#!/bin/bash
-#!/usr/env bash
+#!/usr/bin/zsh
+#!/usr/env zsh
 
 ############################## Turn on minikube ###############################
 
 if ! kubectl version 2>/dev/null 1>&2 ; then
 #	service docker restart
+	service nginx stop
 	minikube start --driver=docker
 	eval $(minikube docker-env)
+	source ./funct.sh
 fi
 
 ############################## Launched with arg ##############################
 
-if [ "$1" == "fclean" ]; then
+if [ "$1" = "fclean" ]; then
 	kubectl delete all --all-namespaces --all
 	exit
 fi
@@ -44,6 +46,9 @@ kubectl apply -f ./srcs/metallb-configmap.yaml
 
 if ! kubectl get pods -n metallb-system 2>&1 | grep controller | grep Running >/dev/null 2>&1; then
 	install_metallb
+	kubectl apply -f dashboard-adminuser.yaml
+#	kubectl proxy &
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended.yaml
 fi
 
 ###############################################################################
