@@ -3,6 +3,11 @@
 
 ############################## Turn on minikube ###############################
 
+if ! groups | grep "docker" 2>/dev/null 1>&2; then
+	echo "Please do : sudo usermod -aG docker user42; newgrp docker"
+	exit
+fi
+
 if ! kubectl version 2>/dev/null 1>&2 ; then
 #	service docker restart
 	service nginx stop
@@ -68,10 +73,10 @@ for service in "${services[@]}"
 do
 	printf "\tBuilding $service image...\n"
 	docker build -t $service-img ./srcs/$service/
-	kubectl delete -f srcs/$service-deployment.yaml #2>/dev/null 1>&2
+	kubectl delete -f srcs/$service-deployment.yaml 2>/dev/null 1>&2
 	printf "\tCreating $service container...\n"
 	kubectl apply -f ./srcs/$service-deployment.yaml # 1>/dev/null
-	while ! kubectl get pods | grep $service | grep Running 1>/dev/null; do
+	while ! kubectl get pods | grep $service | grep Running 1>/dev/null 2>&1 ; do
 		sleep 1;
 	done
 done
