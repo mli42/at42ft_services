@@ -24,3 +24,5 @@ function get-token () {
 	fi
 	echo "\e[94mDon't forget to do a kubectk proxy !\e[m"
 }
+
+function sshnginx () { echo "the password is 'password' 👀" && ssh username@192.168.99.100 }

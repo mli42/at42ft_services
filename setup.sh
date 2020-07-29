@@ -11,7 +11,8 @@ fi
 if ! kubectl version 2>/dev/null 1>&2 ; then
 #	service docker restart
 	service nginx stop
-	minikube start --driver=docker
+	sudo minikube start --driver=none || { echo "try 'sudo chown -R user42 $HOME/.kube $HOME/.minikube' and then... good luck" && exit }
+	echo "\e[91mYou'll need to do 'sudo minikube stop' when finished\e[0m"
 	eval $(minikube docker-env)
 	source ./funct.sh
 fi
@@ -68,6 +69,7 @@ services=(		\
 #	influxdb	\
 )
 
+rm -f ${HOME}/.ssh/known_hosts
 echo "Building images:"
 for service in "${services[@]}"
 do
