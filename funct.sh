@@ -27,3 +27,14 @@ function get-token () {
 
 function sshnginx () { rm -f ${HOME}/.ssh/known_hosts &&
 	echo "\e[93mNo password needed 👀\e[0m" && ssh username@192.168.99.100 }
+
+function dockexec () {
+	service="$1";
+	dockerfile_path=./srcs/$service/
+	cmd="sh"
+	if [ -n "$2" ]; then dockerfile_path="$2" fi
+	if [ -n "$3" ]; then cmd="$3" fi
+	docker build -t $service-img $dockerfile_path && \
+	docker run --rm --name coucou -d -it $service-img && \
+	docker exec -it coucou $cmd; docker kill coucou
+}
