@@ -1,7 +1,7 @@
 #!/bin/sh
 
 export SSH_USERNAME=username;
-export SSH_PASSWORD=password;
+export SSH_PASSWORD=;
 
 adduser -D ${SSH_USERNAME};
 echo "${SSH_USERNAME}:${SSH_PASSWORD}" | chpasswd

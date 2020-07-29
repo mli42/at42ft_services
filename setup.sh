@@ -69,7 +69,6 @@ services=(		\
 #	influxdb	\
 )
 
-rm -f ${HOME}/.ssh/known_hosts
 echo "Building images:"
 for service in "${services[@]}"
 do
