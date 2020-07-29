@@ -36,5 +36,10 @@ function dockexec () {
 	if [ -n "$3" ]; then cmd="$3" fi
 	docker build -t $service-img $dockerfile_path && \
 	docker run --rm --name coucou -d -it $service-img && \
-	docker exec -it coucou $cmd; docker kill coucou
+	docker exec -it coucou $cmd; docker kill coucou 2>/dev/null 1>&2
+}
+
+function install_depedencies () {
+	sudo apt-get install -y conntrack
+	sudo apt-get install -y lftp
 }

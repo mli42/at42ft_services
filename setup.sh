@@ -61,7 +61,7 @@ fi
 
 services=(		\
 	nginx		\
-#	ftps		\
+	ftps		\
 #	wordpress	\
 #	mysql		\
 #	phpmyadmin	\
