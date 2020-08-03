@@ -26,7 +26,8 @@ function get-token () {
 }
 
 function sshnginx () { rm -f ${HOME}/.ssh/known_hosts &&
-	echo "\e[93mNo password needed 👀\e[0m" && ssh username@192.168.99.100 }
+	nginx_url=$(kubectl get services | grep nginx | cut -d " " -f 10) &&
+	echo "\e[93mNo password needed 👀\e[0m" && ssh username@${nginx_url} }
 
 function dockexec () {
 	service="$1";
