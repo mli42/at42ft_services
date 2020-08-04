@@ -14,7 +14,6 @@ if ! kubectl version 2>/dev/null 1>&2 ; then
 	sudo minikube start --driver=none || { echo "try 'sudo chown -R user42 $HOME/.kube $HOME/.minikube' and then... good luck" && exit }
 	echo "\e[91mYou'll need to do 'sudo minikube stop' when finished\e[0m"
 	eval $(minikube docker-env)
-	source ./funct.sh
 fi
 
 ############################## Launched with arg ##############################
@@ -58,23 +57,24 @@ if ! kubectl get pods -n metallb-system 2>&1 | grep controller | grep Running >/
 fi
 
 ###############################################################################
+source ./funct.sh
 
 services=(		\
 	nginx		\
 	ftps		\
-#	wordpress	\
+	wordpress	\
 #	mysql		\
 #	phpmyadmin	\
 #	grafana		\
 #	influxdb	\
 )
 
+clean $services
 echo "Building images:"
 for service in "${services[@]}"
 do
 	printf "\tBuilding $service image...\n"
 	docker build -t $service-img ./srcs/$service/
-	kubectl delete -f srcs/$service-deployment.yaml 2>/dev/null 1>&2
 	printf "\tCreating $service container...\n"
 	kubectl apply -f ./srcs/$service-deployment.yaml # 1>/dev/null
 	while ! kubectl get pods | grep $service | grep Running 1>/dev/null 2>&1 ; do
