@@ -49,10 +49,14 @@ spec:
         image: wordpress-img
         imagePullPolicy: Never
         env:
-        - name: DB_HOST
+        - name: DB_NAME
+          value: wordpress
+        - name: DB_USER
           value: mysql
         - name: DB_PASSWORD
           value: sqlpassword
+        - name: DB_HOST
+          value: mysql
         ports:
         - containerPort: 5050
           name: wordpress

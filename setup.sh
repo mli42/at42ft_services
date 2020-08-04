@@ -63,19 +63,19 @@ services=(		\
 	nginx		\
 	ftps		\
 	wordpress	\
-#	mysql		\
+	mysql		\
 #	phpmyadmin	\
 #	grafana		\
 #	influxdb	\
 )
 
 clean $services
-echo "Building images:"
+echo "\e[97mBuilding images:\e[0m"
 for service in "${services[@]}"
 do
-	printf "\tBuilding $service image...\n"
-	docker build -t $service-img ./srcs/$service/
-	printf "\tCreating $service container...\n"
+	printf "\tBuilding \e[1;95m$service\e[0m image...\n"
+	docker build -t $service-img ./srcs/$service/ >/dev/null
+	printf "\tCreating \e[1;93m$service\e[0m container...\n"
 	kubectl apply -f ./srcs/$service-deployment.yaml # 1>/dev/null
 	while ! kubectl get pods | grep $service | grep Running 1>/dev/null 2>&1 ; do
 		sleep 1;
