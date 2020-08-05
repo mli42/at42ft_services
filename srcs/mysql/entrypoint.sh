@@ -16,7 +16,7 @@ chown -R mysql:mysql /var/lib/mysql
 
 printf "${green}GREEN${eoc}\n"
 
-/usr/bin/mysqld_safe & 
+# /usr/bin/mysqld_safe &
 
 printf "${blue}BLUE${eoc}\n"
 
@@ -26,7 +26,8 @@ printf "${purple}PURPLE${eoc}\n"
 
 
 # mysqladmin -u ${DB_USER} password '${DB_PASSWORD}'
-mysql -u root -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME}; \
+echo >/tmp/init_sql \
+"CREATE DATABASE IF NOT EXISTS ${DB_NAME}; \
 SET PASSWORD FOR '${DB_USER}'@'localhost'=PASSWORD('${DB_PASSWORD}'); \
 GRANT ALL ON *.* TO '${DB_USER}'@'127.0.0.1' IDENTIFIED BY '${DB_PASSWORD}' WITH GRANT OPTION; \
 GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}'; \
@@ -38,14 +39,14 @@ FLUSH PRIVILEGES;"
 
 printf "${red}RED${eoc}\n"
 
-killall mysqld
+# killall mysqld
 
 printf "${dblue}D BLUE${eoc}\n"
 
-/usr/bin/mysqld_safe restart
-
 printf "${green}GREEN${eoc}\n"
 
-cd '/usr' ; /usr/bin/mysqld_safe --datadir='/var/lib/mysql'
+# /usr/share/mariadb/mysql.server stop
 
-tail -f /dev/null
+/usr/bin/mysqld_safe --datadir='/var/lib/mysql' --console --init_file=/tmp/init_sql
+
+# tail -f /dev/null

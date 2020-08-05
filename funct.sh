@@ -44,3 +44,9 @@ function install_depedencies () {
 	sudo apt-get install -y conntrack
 	sudo apt-get install -y lftp
 }
+
+function kexec () {
+	if [ -z "$1" ]; then echo "Give me a pod"; return 1; fi
+	if [ -z "$2" ]; then 2="sh" ; fi
+	kubectl exec -it $1 -- $2;
+}
