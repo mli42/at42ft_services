@@ -16,6 +16,11 @@ function clean () {
 	done
 }
 
+function kre () {
+	clean $@
+	kdeploy $@
+}
+
 function fclean () { kubectl delete all --all-namespaces --all }
 
 function watch_services () { watch kubectl get all --all-namespaces }
