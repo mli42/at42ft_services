@@ -55,7 +55,7 @@ spec:
         - name: DB_USER
           value: mysql
         - name: DB_PASSWORD
-          value: sqlpassword
+          value: password
         - name: DB_HOST
           value: mysql
         ports:
