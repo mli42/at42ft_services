@@ -50,4 +50,5 @@ printf "${green}GREEN${eoc}\n"
 
 mysqld --user=${DB_USER} --console --init_file=/tmp/init_sql
 
+# --password=${DB_PASSWORD}
 # tail -f /dev/null

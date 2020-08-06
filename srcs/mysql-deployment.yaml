@@ -51,13 +51,25 @@ spec:
         imagePullPolicy: Never
         env:
         - name: DB_NAME
-          value: wordpress
+          valueFrom:
+            secretKeyRef:
+              name: db-id
+              key: name
         - name: DB_USER
-          value: mysql
+          valueFrom:
+            secretKeyRef:
+              name: db-id
+              key: user
         - name: DB_PASSWORD
-          value: password
+          valueFrom:
+            secretKeyRef:
+              name: db-id
+              key: password
         - name: DB_HOST
-          value: mysql
+          valueFrom:
+            secretKeyRef:
+              name: db-id
+              key: host
         ports:
         - containerPort: 3306
           name: mysql

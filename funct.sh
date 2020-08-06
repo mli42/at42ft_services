@@ -1,3 +1,12 @@
+function kdeploy () {
+	service="$1";
+	if [ -z "$service" ]; then return 1; fi
+	printf "\tBuilding \e[1;95m$service\e[0m image...\n"
+	docker build -t $service-img ./srcs/$service/ >/dev/null
+	printf "\tCreating \e[1;93m$service\e[0m container...\n"
+	kubectl apply -f ./srcs/$service-deployment.yaml # 1>/dev/null
+}
+
 function clean () {
 	for service in "$@"
 	do

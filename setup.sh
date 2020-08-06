@@ -69,14 +69,20 @@ services=(		\
 #	influxdb	\
 )
 
+kubectl delete secret/db-id 2>/dev/null 1>&2
 clean $services
-echo "\e[97mBuilding images:\e[0m"
+
+echo "\e[97mBuilding \e[1;93mft_services\e[97m:\e[0m"
+
+kubectl create secret generic db-id \
+	--from-literal=name=wordpress \
+	--from-literal=user=root \
+	--from-literal=password=password \
+	--from-literal=host=mysql
+
 for service in "${services[@]}"
 do
-	printf "\tBuilding \e[1;95m$service\e[0m image...\n"
-	docker build -t $service-img ./srcs/$service/ >/dev/null
-	printf "\tCreating \e[1;93m$service\e[0m container...\n"
-	kubectl apply -f ./srcs/$service-deployment.yaml # 1>/dev/null
+	kdeploy $service
 	while ! kubectl get pods | grep $service | grep Running 1>/dev/null 2>&1 ; do
 		sleep 1;
 	done
