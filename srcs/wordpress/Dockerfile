@@ -8,8 +8,8 @@ RUN apk update && apk add nginx vim wget php7 php7-fpm php7-opcache php7-gd php7
 RUN mkdir -p /run/nginx/ # Or nginx won't work...
 
 # Install WordPress
-RUN wget https://wordpress.org/latest.tar.gz && \
-	tar -xf latest.tar.gz && \
+COPY ./wordpress.tar.gz ./
+RUN tar -xf wordpress.tar.gz && \
 	mv wordpress /var/www/
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
