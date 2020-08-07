@@ -6,7 +6,8 @@ WORKDIR /tmp/
 RUN apk update && apk add vim wget mariadb mariadb-common mariadb-client openrc --no-cache
 
 COPY ./my.cnf /etc/my.cnf.d/mariadb-server.cnf
-VOLUME [ "/var/lib/mysql" ]
+
+RUN rmdir /var/lib/mysql
 
 EXPOSE 3306
 
