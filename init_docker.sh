@@ -28,15 +28,16 @@ docker_destination="$goinfre/$USER/docker" #=> Select docker destination (goinfr
 blue=$'\033[0;34m'
 cyan=$'\033[1;96m'
 reset=$'\033[0;39m'
+yellow=$'\e[0;1;93m'
 
 # Uninstall docker, docker-compose and docker-machine if they are installed with brew
 brew uninstall -f docker docker-compose docker-machine &>/dev/null ;:
 
 # Check if Docker is installed with MSC and open MSC if not
 if [ ! -d "/Applications/Docker.app" ] && [ ! -d "~/Applications/Docker.app" ]; then
-	echo "${blue}Please install ${cyan}Docker for Mac ${blue}from the MSC (Managed Software Center)${reset}"
+	echo "${yellow}Please install ${cyan}Docker for Mac ${yellow}from the MSC (Managed Software Center)${reset}"
 	open -a "Managed Software Center"
-	read -n1 -p "${blue}Press RETURN when you have successfully installed ${cyan}Docker for Mac${blue}...${reset}"
+	read -n1 -p "${yellow}Press RETURN when you have successfully installed ${cyan}Docker for Mac${yellow}...${reset}"
 	echo ""
 fi
 
@@ -45,7 +46,7 @@ pkill Docker
 
 # Ask to reset destination if it already exists
 if [ -d "$docker_destination" ]; then
-	read -n1 -p "${blue}Folder ${cyan}$docker_destination${blue} already exists, do you want to reset it? [y/${cyan}N${blue}]${reset} " input
+	read -n1 -p "${yellow}Folder ${cyan}$docker_destination${yellow} already exists, do you want to reset it? [y/${cyan}N${yellow}]${reset} " input
 	echo ""
 	if [ -n "$input" ] && [ "$input" = "y" ]; then
 		rm -rf "$docker_destination"/{com.docker.{docker,helper},.docker} &>/dev/null ;:
@@ -72,4 +73,4 @@ ln -sf "$goinfre"/minikube ~/.minikube
 # Start Docker for Mac
 open -g -a Docker
 
-echo "${cyan}Docker${blue} is now starting!" # "Please report any bug to: ${cyan}aguiot--${reset}"
+echo "${cyan}Docker${yellow} is now starting!${reset}" # "Please report any bug to: ${cyan}aguiot--${reset}"

@@ -16,7 +16,7 @@ if ! kubectl version 2>/dev/null 1>&2 ; then
 		echo "\e[91mYou'll need to do 'sudo minikube stop' when finished\e[0m"
 	else
 		##### On MacOS
-		./init_docker
+		./init_docker.sh
 		# Install BREW 🍺
 		if ! which brew &>/dev/null; then
 			echo "\t\t\e[1;93mInstall BREW 🍺...\e[0m"
@@ -82,7 +82,7 @@ services=(		\
 	ftps		\
 	wordpress	\
 	mysql		\
-#	phpmyadmin	\
+	phpmyadmin	\
 #	grafana		\
 #	influxdb	\
 )

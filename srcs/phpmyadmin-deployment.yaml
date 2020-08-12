@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin-service
+  labels:
+    app: ft_services
+spec:
+  type: LoadBalancer
+  ports:
+    - name: phpmyadmin
+      port: 5000
+      targetPort: 5000
+  selector:
+    app: ft_services
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin-deployment
+  labels:
+    app: ft_services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ft_services
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ft_services
+    spec:
+      containers:
+      - name: phpmyadmin
+        image: phpmyadmin-img
+        imagePullPolicy: Never
+        env:
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: db-id
+              key: name
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-id
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-id
+              key: password
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: db-id
+              key: host
+        ports:
+        - containerPort: 5000
+          name: phpmyadmin
