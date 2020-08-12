@@ -3,23 +3,22 @@ kind: Service
 metadata:
   name: mysql
   labels:
-    app: ft_services
+    app: mysql
 spec:
   type: ClusterIP
   ports:
-    - port: 3306
-      name: mysql
+  - port: 3306
+    protocol: TCP
+    name: http
   selector:
-    app: ft_services
-    tier: mysql
-    #  clusterIP: None
+    app: mysql
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
   labels:
-    app: ft_services-mysql
+    app: ft_services
 spec:
   accessModes:
     - ReadWriteOnce
@@ -30,20 +29,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-deployment
+  name: mysql
   labels:
-    app: ft_services
+    app: mysql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ft_services
+      app: mysql
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: ft_services
+        app: mysql
     spec:
       containers:
       - name: mysql
@@ -72,7 +71,6 @@ spec:
               key: host
         ports:
         - containerPort: 3306
-          name: mysql
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql

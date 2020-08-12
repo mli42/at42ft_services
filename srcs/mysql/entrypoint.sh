@@ -8,7 +8,7 @@ purple="\e[95m"
 blue="\e[96m"
 eoc="\e[0m"
 
-mysql_install_db --user=${DB_USER} --ldata=/var/lib/mysql
+mysql_install_db --ldata=/var/lib/mysql
 
 printf "${red}RED${eoc}\n"
 
@@ -50,7 +50,7 @@ printf "${green}GREEN${eoc}\n"
 
 # /usr/share/mariadb/mysql.server stop
 
-mysqld --user=${DB_USER} --console --init_file=/tmp/init_sql \
+mysqld --console --init_file=/tmp/init_sql \
 	--default-auth=mysql_native_password
 
 # --password=${DB_PASSWORD}

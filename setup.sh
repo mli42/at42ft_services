@@ -1,20 +1,24 @@
-#!/usr/bin/zsh
-#!/usr/env zsh
+#!/usr/bin/env zsh
 
 ############################## Turn on minikube ###############################
 
-if ! groups | grep "docker" 2>/dev/null 1>&2; then
+if  [ "$OSTYPE" = "linux-gnu" ] && ! groups | grep "docker" 2>/dev/null 1>&2; then
 	echo "Please do : sudo usermod -aG docker user42; newgrp docker"
 	exit
 fi
 
 if ! kubectl version 2>/dev/null 1>&2 ; then
-#	service docker restart
-	service nginx stop
-	sudo minikube start --driver=none || { echo "try 'sudo chown -R user42 $HOME/.kube $HOME/.minikube' and then... good luck" && exit }
-	echo "\e[91mYou'll need to do 'sudo minikube stop' when finished\e[0m"
-	eval $(minikube docker-env)
+	if [ "$OSTYPE" = "linux-gnu" ]; then
+#		service docker restart
+		service nginx stop
+		sudo minikube start --driver=none || { echo "try 'sudo chown -R user42 $HOME/.kube $HOME/.minikube' and then... good luck" && exit }
+		sudo chown -R user42 $HOME/.kube $HOME/.minikube
+		echo "\e[91mYou'll need to do 'sudo minikube stop' when finished\e[0m"
+	else
+		minikube start --driver=virtualbox
+	fi
 fi
+eval $(minikube docker-env)
 
 ############################## Launched with arg ##############################
 
@@ -59,6 +63,8 @@ fi
 ###############################################################################
 source ./funct.sh
 
+DB_NAME=wordpress; DB_USER=wpuser; DB_PASSWORD=password; DB_HOST=mysql;
+
 services=(		\
 	nginx		\
 	ftps		\
@@ -75,10 +81,10 @@ clean $services
 echo "\e[97mBuilding \e[1;93mft_services\e[97m:\e[0m"
 
 kubectl create secret generic db-id \
-	--from-literal=name=wordpress \
-	--from-literal=user=root \
-	--from-literal=password=password \
-	--from-literal=host=mysql
+	--from-literal=name=${DB_NAME} \
+	--from-literal=user=${DB_USER} \
+	--from-literal=password=${DB_PASSWORD} \
+	--from-literal=host=${DB_HOST}
 
 for service in "${services[@]}"
 do

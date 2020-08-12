@@ -56,13 +56,18 @@ function dockexec () {
 }
 
 function install_depedencies () {
-	sudo apt-get install -y conntrack
-	sudo apt-get install -y lftp
+	if [ "$OSTYPE" != "linux-gnu" ]; then
+		brew install watch
+	else
+#		sudo apt-get install -y conntrack
+		sudo apt-get install -y lftp
+	fi
 }
 
 function kexec () {
 	if [ -z "$1" ]; then echo "Give me a pod"; return 1; fi
 	if [ -z "$2" ]; then 2="sh" ; fi
+	1=$(echo $1 | cut -d '/' -f 2)
 	kubectl exec -it $1 -- $2;
 }
 
