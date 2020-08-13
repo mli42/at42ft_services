@@ -6,6 +6,8 @@ WORKDIR /tmp/
 RUN apk update && apk add vim wget mariadb mariadb-common mariadb-client openrc --no-cache
 
 COPY ./my.cnf /etc/my.cnf.d/mariadb-server.cnf
+COPY ./new_users.sql ./
+COPY ./wordpress.sql ./
 
 RUN rmdir /var/lib/mysql
 
