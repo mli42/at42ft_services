@@ -1,3 +1,7 @@
+if [ "$MINIKUBE_ACTIVE_DOCKERD" != "minikube" ]; then
+	eval $(minikube docker-env) &>/dev/null
+fi
+
 function kdeploy () {
 	for service in "$@"
 	do
@@ -37,7 +41,11 @@ function get-token () {
 		secret_name=$(kubectl get secrets | grep dashboard-admin-sa | cut -d ' ' -f 1)
 		kubectl describe secret $secret_name
 	fi
-	echo "\e[94mDon't forget to do a kubectk proxy !\e[m"
+	if  ! ps -a | grep -v grep | grep "kubectl proxy" &>/dev/null; then
+		echo "\e[91mForgot to do a kubectl proxy ! 😡\e[m"
+		kubectl proxy &;
+	fi
+	echo "\e[94mkubectl proxy enabled ! 👌\e[m"
 }
 
 function sshnginx () { rm -f ${HOME}/.ssh/known_hosts &&
