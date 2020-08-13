@@ -1,9 +1,9 @@
-FROM alpine:3.12.0
+FROM ft_services
 
 WORKDIR /tmp/
 
 # Prerequisites
-RUN apk update && apk add vim wget mariadb mariadb-common mariadb-client openrc --no-cache
+RUN apk update && apk add mariadb mariadb-common mariadb-client openrc --no-cache
 
 COPY ./my.cnf /etc/my.cnf.d/mariadb-server.cnf
 COPY ./new_users.sql ./

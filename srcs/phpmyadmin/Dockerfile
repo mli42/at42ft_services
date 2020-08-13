@@ -1,9 +1,9 @@
-FROM alpine:3.12.0
+FROM ft_services
 
 WORKDIR /tmp/
 
 # Prerequisites
-RUN apk update && apk add --no-cache nginx vim curl wget supervisor \
+RUN apk update && apk add --no-cache nginx \
 	php7-fpm php7-mcrypt php7-session php7-soap php7-openssl php7-gmp \
 	php7-pdo_odbc php7-json php7-dom php7-pdo php7-zip php7-mysqli \
 	php7-sqlite3 php7-apcu php7-pdo_pgsql php7-bcmath php7-gd php7-odbc \

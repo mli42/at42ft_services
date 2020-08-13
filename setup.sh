@@ -92,6 +92,9 @@ clean $services
 
 echo "\e[97mBuilding \e[1;93mft_services\e[97m:\e[0m"
 
+printf "\tBuilding \e[1;95mcommon\e[0m image...\n"
+docker build -t ft_services ./srcs/base-img/ >/dev/null
+
 kubectl create secret generic db-id \
 	--from-literal=name=${DB_NAME} \
 	--from-literal=user=${DB_USER} \

@@ -1,10 +1,9 @@
-FROM alpine:3.12.0
+FROM ft_services
 
 WORKDIR /tmp/
 
 # Prerequisites
 RUN apk update && apk add openssl openrc vsftpd --no-cache
-RUN apk add vim curl
 RUN openrc; touch /run/openrc/softlevel; # Or rc-thing just won't work...
 
 # SSL

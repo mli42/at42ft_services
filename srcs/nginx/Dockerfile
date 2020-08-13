@@ -1,10 +1,9 @@
-FROM alpine:3.12.0
+FROM ft_services
 
 WORKDIR /tmp/
 
 # Prerequisites
 RUN apk update && apk add nginx openssl openssh-server openrc --no-cache
-RUN apk add vim
 
 RUN openrc; touch /run/openrc/softlevel; # Or rc-thing just won't work...
 #RUN rc-update add nginx && rc-service nginx start;
