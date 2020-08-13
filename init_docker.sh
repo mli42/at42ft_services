@@ -21,6 +21,7 @@
 # Config
 goinfre="/goinfre"
 docker_destination="$goinfre/$USER/docker" #=> Select docker destination (goinfre is a good choice)
+minikube_destination="$goinfre/$USER/minikube"
 
 ################################################################################
 
@@ -33,13 +34,18 @@ yellow=$'\e[0;1;93m'
 # Uninstall docker, docker-compose and docker-machine if they are installed with brew
 brew uninstall -f docker docker-compose docker-machine &>/dev/null ;:
 
-# Check if Docker is installed with MSC and open MSC if not
-if [ ! -d "/Applications/Docker.app" ] && [ ! -d "~/Applications/Docker.app" ]; then
-	echo "${yellow}Please install ${cyan}Docker for Mac ${yellow}from the MSC (Managed Software Center)${reset}"
+# Check if APP is installed with MSC and open MSC if not
+function mscinstall () {
+if [ ! -d "/Applications/$1.app" ] && [ ! -d "~/Applications/$1.app" ]; then
+	echo "${yellow}Please install ${cyan}$1${yellow} from the MSC (Managed Software Center)${reset}"
 	open -a "Managed Software Center"
-	read -n1 -p "${yellow}Press RETURN when you have successfully installed ${cyan}Docker for Mac${yellow}...${reset}"
+	read -n1 -p "${yellow}Press RETURN when you have successfully installed ${cyan}$1${yellow}...${reset}"
 	echo ""
 fi
+}
+
+mscinstall "Docker"
+mscinstall "VirtualBox"
 
 # Kill Docker if started, so it doesn't create files during the process
 pkill Docker
@@ -57,20 +63,26 @@ fi
 unlink ~/Library/Containers/com.docker.docker &>/dev/null ;:
 unlink ~/Library/Containers/com.docker.helper &>/dev/null ;:
 unlink ~/.docker &>/dev/null ;:
+unlink ~/.minikube &>/dev/null ;:
 
 # Delete directories if they were not symlinks
 rm -rf ~/Library/Containers/com.docker.{docker,helper} ~/.docker &>/dev/null ;:
+rm -rf ~/.minikube &>/dev/null ;:
 
 # Create destination directories in case they don't already exist
 mkdir -p "$docker_destination"/{com.docker.{docker,helper},.docker}
+mkdir -p "$minikube_destination"/.minikube
 
 # Make symlinks
 ln -sf "$docker_destination"/com.docker.docker ~/Library/Containers/com.docker.docker
 ln -sf "$docker_destination"/com.docker.helper ~/Library/Containers/com.docker.helper
 ln -sf "$docker_destination"/.docker ~/.docker
-ln -sf "$goinfre"/minikube ~/.minikube
+ln -sf "$minikube_destination"/.minikube ~/.minikube
 
 # Start Docker for Mac
 open -g -a Docker
 
 echo "${cyan}Docker${yellow} is now starting!${reset}" # "Please report any bug to: ${cyan}aguiot--${reset}"
+
+read -n1 -p "${yellow}Press RETURN when ${cyan}Docker${yellow} is ready...${reset}"
+echo ""
