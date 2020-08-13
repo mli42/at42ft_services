@@ -14,9 +14,13 @@ RUN apk update && apk add --no-cache nginx vim curl wget supervisor \
 RUN mkdir -p /run/nginx/ # Or nginx won't work...
 
 # Install WordPress
-COPY ./wordpress.tar.gz ./
-RUN tar -xf wordpress.tar.gz && \
-	mv wordpress /var/www/
+# COPY ./wordpress.tar.gz ./
+ARG VERSION="wordpress-5.5"
+ARG WP_FILE="${VERSION}.tar.gz"
+RUN wget https://wordpress.org/${WP_FILE} && \
+	tar -xf ${WP_FILE} && \
+	mv wordpress /var/www/ && \
+	rm -rf ${WP_FILE}
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./wp-config.php /var/www/wordpress/
