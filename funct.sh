@@ -1,6 +1,6 @@
-if [ "$MINIKUBE_ACTIVE_DOCKERD" != "minikube" ]; then
-	eval $(minikube docker-env) &>/dev/null
-fi
+#if [ "$MINIKUBE_ACTIVE_DOCKERD" != "minikube" ]; then
+#	eval $(minikube docker-env) &>/dev/null
+#fi
 
 function kdeploy () {
 	for service in "$@"
@@ -49,8 +49,9 @@ function get-token () {
 }
 
 function sshnginx () { rm -f ${HOME}/.ssh/known_hosts &&
-	nginx_url=$(kubectl get services | grep nginx | cut -d " " -f 10) &&
-	echo "\e[93mNo password needed 👀\e[0m" && ssh username@${nginx_url} }
+	nginx_url=$(kubectl describe service/nginx-service | grep IPAllocated | cut -d "\"" -f 2) &&
+	echo "\e[93mNo password needed 👀\e[0m" && ssh username@${nginx_url} -p 22
+}
 
 function dockexec () {
 	service="$1";

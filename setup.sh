@@ -30,7 +30,7 @@ if ! kubectl version 2>/dev/null 1>&2 ; then
 		minikube start --driver=virtualbox || { echo "Couldn't start, try minikube delete"; exit }
 	fi
 fi
-eval $(minikube docker-env)
+# eval $(minikube docker-env)
 
 ############################## Launched with arg ##############################
 

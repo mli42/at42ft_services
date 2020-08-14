@@ -25,5 +25,8 @@ VOLUME [ "/sys/fs/cgroup" ]
 
 EXPOSE 80 443 22
 
+# SUPERVISOR
+COPY ./supervisord.conf /etc/supervisord.conf
+
 COPY ./entrypoint.sh .
 ENTRYPOINT ./entrypoint.sh
