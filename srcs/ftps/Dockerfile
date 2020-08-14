@@ -12,7 +12,12 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 	-keyout /etc/ssl/private/vsftpd.key \
 	-out /etc/ssl/certs/vsftpd.crt
 
+COPY ./vsftpd.conf /etc/vsftpd/
+
 EXPOSE 21 30000
+
+# SUPERVISOR
+COPY ./supervisord.conf /etc/supervisord.conf
 
 COPY ./entrypoint.sh .
 ENTRYPOINT ./entrypoint.sh
