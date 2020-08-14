@@ -27,5 +27,8 @@ COPY ./wp-config.php /var/www/wordpress/
 
 EXPOSE 5050
 
+# SUPERVISOR
+COPY ./supervisord.conf /etc/
+
 COPY ./entrypoint.sh .
 ENTRYPOINT ./entrypoint.sh

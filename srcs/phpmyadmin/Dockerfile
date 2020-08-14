@@ -26,5 +26,8 @@ COPY ./pma_config.php /var/www/phpmyadmin/config.inc.php
 
 EXPOSE 5000
 
+# SUPERVISOR
+COPY ./supervisord.conf /etc/
+
 COPY ./entrypoint.sh .
 ENTRYPOINT ./entrypoint.sh
