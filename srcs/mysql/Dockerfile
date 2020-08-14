@@ -20,5 +20,9 @@ RUN rmdir /var/lib/mysql
 
 EXPOSE 3306
 
+# SUPERVISOR
+COPY ./supervisord.conf /etc/
+RUN mkdir -p /var/log/supervisor/
+
 COPY ./entrypoint.sh ./
 ENTRYPOINT ./entrypoint.sh

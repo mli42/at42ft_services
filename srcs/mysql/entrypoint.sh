@@ -61,4 +61,4 @@ rm -f $tmpsql
 
 /usr/share/mariadb/mysql.server stop
 
-mysqld --default-authentication-plugin=mysql_native_password
+supervisord
