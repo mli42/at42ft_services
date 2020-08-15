@@ -16,7 +16,11 @@ if ! kubectl version 2>/dev/null 1>&2 ; then
 		echo "\e[91mYou'll need to do 'sudo minikube stop' when finished\e[0m"
 	else
 		##### On MacOS
-		./init_docker.sh
+		if [ -d /goinfre ]; then
+			./init_docker.sh # Only if at school 42
+		else
+			open -g -a Docker && sleep 5
+		fi
 		# Install BREW 🍺
 		if ! which brew &>/dev/null; then
 			echo "\t\t\e[1;93mInstall BREW 🍺...\e[0m"
@@ -30,13 +34,9 @@ if ! kubectl version 2>/dev/null 1>&2 ; then
 		minikube start --driver=virtualbox || { echo "Couldn't start, try minikube delete"; exit }
 	fi
 fi
-# eval $(minikube docker-env)
 
-############################## Launched with arg ##############################
-
-if [ "$1" = "fclean" ]; then
-	kubectl delete all --all-namespaces --all
-	exit
+if [ "$OSTYPE" != "linux-gnu" ]; then
+	eval $(minikube docker-env)
 fi
 
 ############################## Install Metal LB ###############################

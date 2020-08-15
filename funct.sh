@@ -1,6 +1,6 @@
-#if [ "$MINIKUBE_ACTIVE_DOCKERD" != "minikube" ]; then
-#	eval $(minikube docker-env) &>/dev/null
-#fi
+if [ "$MINIKUBE_ACTIVE_DOCKERD" != "minikube" ]; then
+	eval $(minikube docker-env) &>/dev/null
+fi
 
 function kdeploy () {
 	for service in "$@"
