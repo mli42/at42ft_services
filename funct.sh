@@ -84,3 +84,11 @@ function klogs () {
 	if [ -z "$1" ]; then echo "Give me a pod"; return 1; fi
 	kubectl logs $1
 }
+
+function killdockersvc () {
+	for service in "$@"
+	do
+		echo "\e[91mKilling $service...\e[m"
+		docker kill $(docker ps | grep $service | grep -v "/pause" | cut -d ' ' -f 1)
+	done
+}
