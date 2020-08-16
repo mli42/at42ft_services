@@ -116,5 +116,6 @@ done
 
 echo "\e[1;92mft_services is ready\e[m:"
 echo "Dashboard: 'source ./funct.sh && get-token'"
+echo "ftps: 42user:42pass"
 echo "PhpMyAdmin/MySQL: ${DB_USER}:${DB_PASSWORD}"
 echo "wpUsers: admin:admin (admin) | wpuser1:wpuser1pass (author) | wpuser2:wpuser2pass (subscriber)"

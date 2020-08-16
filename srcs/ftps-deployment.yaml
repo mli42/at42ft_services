@@ -6,7 +6,7 @@
 #    By: mli <mli@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/19 20:13:53 by mli               #+#    #+#              #
-#    Updated: 2020/08/14 14:12:02 by mli              ###   ########.fr        #
+#    Updated: 2020/08/16 19:32:42 by mli              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,19 @@ spec:
       port: 21
     - name: ftp-data
       port: 30000
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ftps-pv-claim
+  labels:
+    app: ft_services
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -51,3 +64,10 @@ spec:
         - containerPort: 21
         - containerPort: 30000
       restartPolicy: Always
+        volumeMounts:
+        - name: ftps-persistent-storage
+          mountPath: /home/ftps
+      volumes:
+      - name: ftps-persistent-storage
+        persistentVolumeClaim:
+          claimName: ftps-pv-claim

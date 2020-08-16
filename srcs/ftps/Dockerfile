@@ -3,8 +3,7 @@ FROM ft_services
 WORKDIR /tmp/
 
 # Prerequisites
-RUN apk update && apk add openssl openrc vsftpd --no-cache
-RUN openrc; touch /run/openrc/softlevel; # Or rc-thing just won't work...
+RUN apk update && apk add openssl vsftpd
 
 # SSL
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
