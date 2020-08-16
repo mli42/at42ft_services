@@ -36,8 +36,6 @@ function get-token () {
 	if [ -n "$1" ]; then
 		kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
 	else
-		kubectl create serviceaccount dashboard-admin-sa 2>/dev/null 1>&2
-		kubectl create clusterrolebinding dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=default:dashboard-admin-sa 2>/dev/null 1>&2
 		secret_name=$(kubectl get secrets | grep dashboard-admin-sa | cut -d ' ' -f 1)
 		kubectl describe secret $secret_name
 	fi

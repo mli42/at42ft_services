@@ -70,6 +70,11 @@ if ! kubectl get pods -n metallb-system 2>&1 | grep controller | grep Running >/
 	kubectl apply -f ./srcs/dashboard-adminuser.yaml
 #	kubectl proxy &
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended.yaml
+
+	kubectl create serviceaccount dashboard-admin-sa &>/dev/null
+	kubectl create clusterrolebinding dashboard-admin-sa \
+		--clusterrole=cluster-admin \
+		--serviceaccount=default:dashboard-admin-sa &>/dev/null
 fi
 
 ###############################################################################
@@ -110,5 +115,6 @@ do
 done
 
 echo "\e[1;92mft_services is ready\e[m:"
+echo "Dashboard: 'source ./funct.sh && get-token'"
 echo "PhpMyAdmin/MySQL: ${DB_USER}:${DB_PASSWORD}"
 echo "wpUsers: admin:admin (admin) | wpuser1:wpuser1pass (author) | wpuser2:wpuser2pass (subscriber)"
