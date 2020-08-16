@@ -42,9 +42,12 @@ GRANT ALL PRIVILEGES ON *.* TO '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}' W
 GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}' WITH GRANT OPTION;
 FLUSH PRIVILEGES;"
 
-mysql -h localhost -e "$(cat $tmpsql)"
-mysql -h localhost -e "$(cat ./wordpress.sql)"
-mysql -h localhost -e "$(cat ./new_users.sql)"
+if [ ! -f /var/lib/mysql/wpNewUsers ]; then
+	echo "done" >> /var/lib/mysql/wpNewUsers
+	mysql -h localhost -e "$(cat $tmpsql)"
+	mysql -h localhost -e "$(cat ./wordpress.sql)"
+	mysql -h localhost -e "$(cat ./new_users.sql)"
+fi
 
 rm -f $tmpsql
 
