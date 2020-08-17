@@ -98,7 +98,7 @@ services=(		\
 	mysql		\
 	phpmyadmin	\
 #	grafana		\
-#	influxdb	\
+	influxdb	\
 )
 
 kubectl delete secret/db-id 2>/dev/null 1>&2
