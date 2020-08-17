@@ -64,7 +64,7 @@ function dockexec () {
 
 function install_depedencies () {
 	if [ "$OSTYPE" != "linux-gnu" ]; then
-		brew install watch
+		brew install watch lftp
 	else
 #		sudo apt-get install -y conntrack
 		sudo apt-get install -y lftp
