@@ -80,6 +80,15 @@ fi
 ###############################################################################
 source ./funct.sh
 
+red="\e[1;91m"
+green="\e[1;92m"
+yellow="\e[1;93m"
+dblue="\e[1;94m"
+purple="\e[1;95m"
+blue="\e[1;96m"
+eoc="\e[0m"
+underlined="\e[4m"
+
 DB_NAME=wordpress; DB_USER=wpuser; DB_PASSWORD=password; DB_HOST=mysql;
 
 services=(		\
@@ -114,8 +123,12 @@ do
 	done
 done
 
-echo "\e[1;92mft_services is ready\e[m:"
-echo "Dashboard: 'source ./funct.sh && get-token'"
-echo "ftps: 42user:42pass"
-echo "PhpMyAdmin/MySQL: ${DB_USER}:${DB_PASSWORD}"
-echo "wpUsers: admin:admin (admin) | wpuser1:wpuser1pass (author) | wpuser2:wpuser2pass (subscriber)"
+echo "\t${green}ft_services is ready${eoc}:"
+echo "${yellow}${underlined}Dashboard${eoc}: ${dblue}'source ./funct.sh && get-token'${eoc}"
+echo "${yellow}${underlined}PhpMyAdmin/MySQL${eoc}: ${dblue}${DB_USER}:${DB_PASSWORD}${eoc}"
+echo "${yellow}${underlined}wpUsers${eoc}: ${dblue}admin:admin (admin) | wpuser1:wpuser1pass (author) | wpuser2:wpuser2pass (subscriber)${eoc}"
+
+echo "${yellow}${underlined}ftps${eoc}:"
+echo "${purple}- ${dblue}lftp -u 42user,42pass \$(kubectl get services ftps-service --output jsonpath='{.status.loadBalancer.ingress[0].ip}') -p 21 -e \"set ssl:verify-certificate false\"${eoc}" # debug 999 for verbose
+echo "${green}OR${eoc}"
+echo "${purple}- ${dblue}curl --ftp-ssl --insecure --user 42user:42pass ftp://\$(kubectl get services ftps-service --output jsonpath='{.status.loadBalancer.ingress[0].ip}'):21${eoc}" # -v for verbose
