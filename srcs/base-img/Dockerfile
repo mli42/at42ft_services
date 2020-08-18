@@ -6,3 +6,5 @@ WORKDIR /tmp/
 
 RUN apk update && apk upgrade && apk add --no-cache vim supervisor wget curl && \
 	apk add telegraf --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+
+COPY ./telegraf.conf /etc/
