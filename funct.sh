@@ -1,4 +1,4 @@
-if [ "$MINIKUBE_ACTIVE_DOCKERD" != "minikube" ]; then
+if [ "$OSTYPE" != "linux-gnu" ] && [ "$MINIKUBE_ACTIVE_DOCKERD" != "minikube" ]; then
 	eval $(minikube docker-env) &>/dev/null
 fi
 

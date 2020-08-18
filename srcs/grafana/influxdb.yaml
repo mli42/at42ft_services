@@ -3,4 +3,4 @@ datasources:
 - name: telegraf_metrics
   type: influxdb
   url: http://influxdb:8086
-  database: telegraf
+  database: telegraf_metrics
