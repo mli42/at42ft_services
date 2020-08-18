@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.99.104
+  ports:
+  - port: 3000
+    protocol: TCP
+    name: http
+  selector:
+    app: grafana
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana-img
+        imagePullPolicy: Never
+        env:
+        - name: GRAF_USER
+          valueFrom:
+            secretKeyRef:
+              name: mliuser
+              key: user
+        - name: GRAF_PASS
+          valueFrom:
+            secretKeyRef:
+              name: mliuser
+              key: password
+        ports:
+        - containerPort: 3000

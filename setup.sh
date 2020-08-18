@@ -97,11 +97,12 @@ services=(		\
 	wordpress	\
 	mysql		\
 	phpmyadmin	\
-#	grafana		\
+	grafana		\
 	influxdb	\
 )
 
 kubectl delete secret/db-id 2>/dev/null 1>&2
+kubectl delete secret/mliuser 2>/dev/null 1>&2
 clean $services
 
 echo "\e[97mBuilding \e[1;93mft_services\e[97m:\e[0m"
@@ -114,6 +115,10 @@ kubectl create secret generic db-id \
 	--from-literal=user=${DB_USER} \
 	--from-literal=password=${DB_PASSWORD} \
 	--from-literal=host=${DB_HOST}
+
+kubectl create secret generic mliuser \
+	--from-literal=user="mliuser" \
+	--from-literal=password="mlipass" \
 
 for service in "${services[@]}"
 do
@@ -132,3 +137,4 @@ echo "${yellow}${underlined}ftps${eoc}:"
 echo "${purple}- ${dblue}lftp -u 42user,42pass \$(kubectl get services ftps-service --output jsonpath='{.status.loadBalancer.ingress[0].ip}') -p 21 -e \"set ssl:verify-certificate false\"${eoc}" # debug 999 for verbose
 echo "${green}OR${eoc}"
 echo "${purple}- ${dblue}curl --ftp-ssl --insecure --user 42user:42pass ftp://\$(kubectl get services ftps-service --output jsonpath='{.status.loadBalancer.ingress[0].ip}'):21${eoc}" # -v for verbose
+echo "${yellow}${underlined}Grafana${eoc}: ${dblue}mliuser:mlipass${eoc}"
