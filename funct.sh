@@ -41,7 +41,7 @@ function get-token () {
 	fi
 	if  ! ps -a | grep -v grep | grep "kubectl proxy" &>/dev/null; then
 		echo "\e[91mForgot to do a kubectl proxy ! 😡\e[m"
-		kubectl proxy &;
+		kubectl proxy 2>/dev/null &
 	fi
 	echo "\e[94mkubectl proxy enabled ! 👌\e[m"
 }

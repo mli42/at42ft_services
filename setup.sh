@@ -68,7 +68,7 @@ if ! kubectl get pods -n metallb-system 2>&1 | grep controller | grep Running >/
 	echo "\t\t\e[1;93mInstall MetalLB...\e[0m"
 	install_metallb > /dev/null
 	kubectl apply -f ./srcs/dashboard-adminuser.yaml
-#	kubectl proxy &
+	kubectl proxy 2>/dev/null &
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended.yaml
 
 	kubectl create serviceaccount dashboard-admin-sa &>/dev/null
@@ -134,7 +134,8 @@ echo "${yellow}${underlined}PhpMyAdmin/MySQL${eoc}: ${dblue}${DB_USER}:${DB_PASS
 echo "${yellow}${underlined}wpUsers${eoc}: ${dblue}admin:admin (admin) | wpuser1:wpuser1pass (author) | wpuser2:wpuser2pass (subscriber)${eoc}"
 
 echo "${yellow}${underlined}ftps${eoc}:"
-echo "${purple}- ${dblue}lftp -u 42user,42pass \$(kubectl get services ftps-service --output jsonpath='{.status.loadBalancer.ingress[0].ip}') -p 21 -e \"set ssl:verify-certificate false\"${eoc}" # debug 999 for verbose
+ftps_ip=$(kubectl get services ftps --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+echo "${purple}- ${dblue}lftp -u 42user,42pass $ftps_ip -p 21 -e \"set ssl:verify-certificate false\"${eoc}" # debug 999 for verbose
 echo "${green}OR${eoc}"
-echo "${purple}- ${dblue}curl --ftp-ssl --insecure --user 42user:42pass ftp://\$(kubectl get services ftps-service --output jsonpath='{.status.loadBalancer.ingress[0].ip}'):21${eoc}" # -v for verbose
+echo "${purple}- ${dblue}curl --ftp-ssl --insecure --user 42user:42pass ftp://${ftps_ip}:21${eoc}" # -v for verbose
 echo "${yellow}${underlined}Grafana${eoc}: ${dblue}mliuser:mlipass${eoc}"
