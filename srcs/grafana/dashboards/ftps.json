@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 6,
+  "id": 2,
   "links": [],
   "panels": [
     {
@@ -114,7 +114,7 @@
             {
               "key": "host",
               "operator": "=",
-              "value": "nginx-1"
+              "value": "ftps-0"
             }
           ]
         }
@@ -242,7 +242,7 @@
             {
               "key": "host",
               "operator": "=",
-              "value": "nginx-1"
+              "value": "ftps-0"
             }
           ]
         }
@@ -370,7 +370,7 @@
             {
               "key": "host",
               "operator": "=",
-              "value": "nginx-1"
+              "value": "ftps-0"
             }
           ]
         },
@@ -412,7 +412,7 @@
             {
               "key": "host",
               "operator": "=",
-              "value": "nginx-1"
+              "value": "ftps-0"
             }
           ]
         },
@@ -454,7 +454,7 @@
             {
               "key": "host",
               "operator": "=",
-              "value": "nginx-1"
+              "value": "ftps-0"
             }
           ]
         }
@@ -612,7 +612,7 @@
             {
               "key": "host",
               "operator": "=",
-              "value": "nginx-1"
+              "value": "ftps-0"
             }
           ]
         },
@@ -654,7 +654,7 @@
             {
               "key": "host",
               "operator": "=",
-              "value": "nginx-1"
+              "value": "ftps-0"
             }
           ]
         }
@@ -783,7 +783,7 @@
             {
               "key": "host",
               "operator": "=",
-              "value": "nginx-1"
+              "value": "ftps-0"
             }
           ]
         }
@@ -820,7 +820,7 @@
     ]
   },
   "timezone": "",
-  "title": "Nginx-1",
-  "uid": "iiaeQmNGk",
+  "title": "ftps_0",
+  "uid": "pETyQiHMz",
   "version": 1
 }
