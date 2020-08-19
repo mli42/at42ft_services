@@ -3,11 +3,12 @@
 export FTP_USERNAME=42user;
 export FTP_PASSWORD=42pass;
 
-adduser -h /home/ftps -D ${FTP_USERNAME};
-echo "${FTP_USERNAME}:${FTP_PASSWORD}" | chpasswd
+echo -e "$FTP_PASSWORD\n$FTP_PASSWORD" | adduser -h /mnt/ftp $FTP_USERNAME
 
 if [ ! -f /home/ftps/hello ]; then
-	echo "hello world!" > /home/ftps/hello
+	echo "hello world!" > /mnt/ftp/hello
+	mkdir -p /mnt/ftp/coucou
+	echo "Coucou!" > /mnt/ftp/coucou/coucoufile
 fi
 
 supervisord

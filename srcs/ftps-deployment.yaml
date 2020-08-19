@@ -6,57 +6,75 @@
 #    By: mli <mli@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/19 20:13:53 by mli               #+#    #+#              #
-#    Updated: 2020/08/19 11:18:54 by mli              ###   ########.fr        #
+#    Updated: 2020/08/19 15:35:49 by mli              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-kind: Service
 apiVersion: v1
+kind: PersistentVolume
 metadata:
-  name: ftps-service
+  name: ftps-pv-volume
   labels:
-    app: ft_services
+    type: local
 spec:
-  type: LoadBalancer
-  loadBalancerIP: 192.168.99.101
-  selector:
-    app: ft_services
-  ports:
-    - name: ftp-connection
-      port: 21
-    - name: ftp-data
-      port: 30000
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/k8s_pvc/ftps"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ftps-pv-claim
-  labels:
-    app: ft_services
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 2Gi
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ftps
+  labels:
+    app: ftps
+spec:
+  loadBalancerIP: 192.168.99.101
+  type: LoadBalancer
+  selector:
+    app: ftps
+  ports:
+  - name: ftp-connection
+    port: 21
+  - name: pftp-data
+    port: 30000
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: ftps
   labels:
-    app: ft_services
+    app: ftps
 spec:
   serviceName: ftps
   replicas: 1
   selector:
     matchLabels:
-      app: ft_services
+      app: ftps
   template:
     metadata:
       labels:
-        app: ft_services
+        app: ftps
     spec:
+      volumes:
+      - name: ftps-pv-storage
+        persistentVolumeClaim:
+          claimName: ftps-pv-claim
       containers:
       - name: ftps
         image: ftps-img
@@ -65,9 +83,5 @@ spec:
         - containerPort: 21
         - containerPort: 30000
         volumeMounts:
-        - name: ftps-persistent-storage
-          mountPath: /home/ftps
-      volumes:
-      - name: ftps-persistent-storage
-        persistentVolumeClaim:
-          claimName: ftps-pv-claim
+        - mountPath: "/mnt/ftp"
+          name: ftps-pv-storage

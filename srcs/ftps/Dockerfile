@@ -7,7 +7,7 @@ RUN apk update && apk add openssl vsftpd
 
 # SSL
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-	-subj "/C=FR/ST=75/L=Paris/O=42/CN=mli" \
+	-subj "/C=FR/ST=75/L=Paris/O=42/CN=192.168.99.101" \
 	-keyout /etc/ssl/private/vsftpd.key \
 	-out /etc/ssl/certs/vsftpd.crt
 
@@ -17,6 +17,8 @@ EXPOSE 21 30000
 
 # SUPERVISOR
 COPY ./supervisord.conf /etc/supervisord.conf
+
+VOLUME /mnt/ftps-data
 
 COPY ./entrypoint.sh .
 ENTRYPOINT ./entrypoint.sh
