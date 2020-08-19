@@ -6,7 +6,7 @@
 #    By: mli <mli@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/19 20:13:53 by mli               #+#    #+#              #
-#    Updated: 2020/08/17 09:19:58 by mli              ###   ########.fr        #
+#    Updated: 2020/08/19 11:18:54 by mli              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,12 +41,13 @@ spec:
       storage: 2Gi
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: ftps-deployment
+  name: ftps
   labels:
     app: ft_services
 spec:
+  serviceName: ftps
   replicas: 1
   selector:
     matchLabels:

@@ -27,18 +27,17 @@ spec:
       storage: 2Gi
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: influxdb
   labels:
     app: influxdb
 spec:
+  serviceName: influxdb
   replicas: 1
   selector:
     matchLabels:
       app: influxdb
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -48,27 +47,6 @@ spec:
       - name: influxdb
         image: influxdb-img
         imagePullPolicy: Never
-        env:
-        - name: DB_NAME
-          valueFrom:
-            secretKeyRef:
-              name: db-id
-              key: name
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: db-id
-              key: user
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: db-id
-              key: password
-        - name: DB_HOST
-          valueFrom:
-            secretKeyRef:
-              name: db-id
-              key: host
         ports:
         - containerPort: 8086
         volumeMounts:

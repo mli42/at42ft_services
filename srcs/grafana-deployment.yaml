@@ -15,18 +15,17 @@ spec:
     app: grafana
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: grafana
   labels:
     app: grafana
 spec:
+  serviceName: grafana
   replicas: 1
   selector:
     matchLabels:
       app: grafana
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
